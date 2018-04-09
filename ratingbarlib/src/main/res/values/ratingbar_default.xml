@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="default_star_backgroud_color">#ff787878</color>
+    <color name="default_star_cover_color">#FFFFCC44</color>
+    <integer name="default_num_star">5</integer>
+    <dimen name="default_radius_star">15dp</dimen>
+    <dimen name="default_padding_star">3dp</dimen>
+    <string name="default_maxrating_star">10</string>
+
+</resources>
