@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
@@ -21,9 +20,9 @@ public class RatingBar extends View{
     private int mStarColor = 0xff787878;
     private int mStarCoverColor = 0xFFFFCC44;
 
-    private FiveStarShape mDefaultStar;
-    private FiveStarShape mPaintedStar;
-    private FiveStarShape mHalfStar;
+    private StarShape mDefaultStar;
+    private StarShape mPaintedStar;
+    private StarShape mHalfStar;
     private float mRating;
     private float mMaxRating = 10;
 
@@ -81,14 +80,14 @@ public class RatingBar extends View{
 
     private void makeDefaultStar() {
         if(mDiameter > 0) {
-            mDefaultStar = FiveStarShape.create(mDiameter,mDiameter,0,mStarColor,mStarCoverColor);
-            mPaintedStar = FiveStarShape.create(mDiameter,mDiameter,1,mStarColor,mStarCoverColor);
+            mDefaultStar = StarShape.create(mDiameter,mDiameter,0,mStarColor,mStarCoverColor);
+            mPaintedStar = StarShape.create(mDiameter,mDiameter,1,mStarColor,mStarCoverColor);
         }
     }
 
     private void makeRatioStar() {
         if(mDiameter > 0) {
-            mHalfStar = FiveStarShape.create(mDiameter,mDiameter,(mRating%mRSR)/mRSR,mStarColor,mStarCoverColor);
+            mHalfStar = StarShape.create(mDiameter,mDiameter,(mRating%mRSR)/mRSR,mStarColor,mStarCoverColor);
         }
     }
 

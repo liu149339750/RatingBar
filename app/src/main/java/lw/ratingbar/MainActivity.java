@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 
-import com.lw.ratingbar.FiveStarShape;
+import com.lw.ratingbar.StarShape;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FiveStarShape shape = FiveStarShape.create(500,500,0.5f);
+        StarShape shape = StarShape.create(500,500,0.5f);
         shape.setRatio(0.5f);
         ShapeDrawable drawable = new ShapeDrawable(shape);
         drawable.setIntrinsicWidth(500);

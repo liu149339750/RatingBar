@@ -14,7 +14,7 @@ import android.graphics.drawable.shapes.Shape;
  * Created by ubuntu on 18-3-15.
  */
 
-public class FiveStarShape extends Shape{
+public class StarShape extends Shape{
     private Path    mPath;
     private float   mStdWidth;
     private float   mStdHeight;
@@ -39,7 +39,7 @@ public class FiveStarShape extends Shape{
      * @param stdHeight the standard height for the shape. Any changes to the
      *                  height with resize() will result in a height scaled based
      */
-    public FiveStarShape(Path path, float stdWidth, float stdHeight, float radio, int bc, int cc) {
+    public StarShape(Path path, float stdWidth, float stdHeight, float radio, int bc, int cc) {
         this.mStdWidth = stdWidth;
         this.mStdHeight = stdHeight;
         mPath = path;
@@ -111,19 +111,19 @@ public class FiveStarShape extends Shape{
     }
 
 
-    public static FiveStarShape create(float stdWidth, float stdHeight, float radio, int bc, int cc) {
+    public static StarShape create(float stdWidth, float stdHeight, float radio, int bc, int cc) {
         float l = stdHeight > stdWidth ? stdWidth:stdHeight;
         float radius = l/2;
         Path path = getPath(radius);
-        return new FiveStarShape(path,l,l,radio,bc,cc);
+        return new StarShape(path,l,l,radio,bc,cc);
     }
 
     /**五个角分别为ABCDE，五个内角分别为A1，B1，C1，D1，E1*/
-    public static FiveStarShape create(float stdWidth, float stdHeight, float radio) {
+    public static StarShape create(float stdWidth, float stdHeight, float radio) {
         float l = stdHeight > stdWidth ? stdWidth:stdHeight;
         float radius = l/2;
         Path path = getPath(radius);
-        return new FiveStarShape(path,l,l,radio,0xff787878,0xFFFFCC44);
+        return new StarShape(path,l,l,radio,0xff787878,0xFFFFCC44);
     }
 
     private static Path getPath(float radius) {

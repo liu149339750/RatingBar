@@ -6,7 +6,7 @@
         <attr name="rating" format="float"></attr>
         <attr name="starRadius" format="dimension"></attr>
         <attr name="starPadding" format="dimension"></attr>
-        <attr name="starBackColor" format="reference"></attr>
-        <attr name="starCoverColor" format="reference"></attr>
+        <attr name="starBackColor" format="color"></attr>
+        <attr name="starCoverColor" format="color"></attr>
     </declare-styleable>
 </resources>
