@@ -8,5 +8,6 @@
         <attr name="starPadding" format="dimension"></attr>
         <attr name="starBackColor" format="color"></attr>
         <attr name="starCoverColor" format="color"></attr>
+        <attr name="isIndicator" format="boolean"></attr>
     </declare-styleable>
 </resources>

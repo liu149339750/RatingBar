@@ -1,5 +1,8 @@
 # RatingBar
 背景：开发的应用中需要一个评分控件展现评分数。原生的API限制太大太丑，难以满足要求，从网上也没有找到满意的开源控件。
+优点：
+1.无需准备图片
+2.可调整星星的大小与间隔
 
 ##如何使用
 ```
@@ -10,6 +13,8 @@
             app:starCoverColor="@color/default_star_cover_color"
             app:numStars="5"
             app:rating="5"/>
+
+注意：星星的大小靠starRadius调节，layout_width不能调整宽度，控件只会申请其本身所占用的宽度。
 ```
 #方法与属性说明
 ```
@@ -36,12 +41,9 @@ app:starBackColor 星星的背景颜色
 <br />
 app:starCoverColor 遮盖星星部分颜色
 
-```
+app:isIndicator 是否只是个指示器
 
-##遗留事项
-目前此控件只有展示评分功能，需下一步完善的主要有：
-* 添加星星边缘阴影效果
-* 增加手势操作，实现评分功能。
+```
 
 <img src="https://github.com/liu149339750/RatingBar/blob/master/shutcut.png"/>
 

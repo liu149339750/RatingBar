@@ -5,8 +5,12 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 
 /**
  * Created by ubuntu on 18-3-16.
@@ -22,11 +26,17 @@ public class RatingBar extends View{
 
     private StarShape mDefaultStar;
     private StarShape mPaintedStar;
-    private StarShape mHalfStar;
+    private StarShape mRatioStar;
+    private StarShape mHalfPaitedStar;
     private float mRating;
     private float mMaxRating = 10;
 
     private float mRSR;
+
+    private boolean mIsIndicator;
+    private int mTouchSlop;
+    private PointF mTouchPoint;
+    private OnRatingBarChangeListener mLinstener;
 
     public RatingBar(Context context) {
         super(context);
@@ -43,16 +53,22 @@ public class RatingBar extends View{
         mStarPadding = a.getDimensionPixelSize(R.styleable.RatingBar_starPadding,res.getDimensionPixelSize(R.dimen.default_padding_star));
         mStarColor = a.getColor(R.styleable.RatingBar_starBackColor,res.getColor(R.color.default_star_backgroud_color));
         mStarCoverColor = a.getColor(R.styleable.RatingBar_starCoverColor,res.getColor(R.color.default_star_cover_color));
+        boolean isIndicator = a.getBoolean(R.styleable.RatingBar_isIndicator,res.getBoolean(R.bool.default_IsIndicator));
         a.recycle();
 
         setNumStar(numStar);
         setStarRadius(radius);
 
+        setIsIndicator(isIndicator);
     }
 
     public void setNumStar(int count) {
         mNumStar = count;
         mRSR = mMaxRating/count;
+    }
+
+    public int getNumStar() {
+        return mNumStar;
     }
 
     public void setMaxRating(float max) {
@@ -62,21 +78,67 @@ public class RatingBar extends View{
         invalidate();
     }
 
+    public float getMaxRating() {
+        return mMaxRating;
+    }
+
     public void setStarPadding(int padding) {
         mStarPadding = padding;
+        requestLayout();
+    }
+
+    public int getStarPadding() {
+        return mStarPadding;
     }
 
     public void setStarRadius(int radius) {
         mDiameter = radius * 2;
         makeDefaultStar();
         makeRatioStar();
+        if(!mIsIndicator) {
+            makeHalfPaitedStar();
+        }
+        requestLayout();
     }
+
+    public int getStarRadius() {
+        return mDiameter/2;
+    }
+
+    public void setIsIndicator(boolean enable) {
+        mIsIndicator = enable;
+        if(!mIsIndicator) {
+            mTouchPoint = new PointF();
+            mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+            makeHalfPaitedStar();
+        }
+    }
+
+    public boolean isIndicator() {
+        return mIsIndicator;
+    }
+
+    public void setOnRatingBarChangeListener (RatingBar.OnRatingBarChangeListener listener) {
+        mLinstener = listener;
+    }
+
 
     public void setRating(float score) {
         mRating = score;
         makeRatioStar();
         invalidate();
+        if(mLinstener != null)
+            mLinstener.onRatingChanged(this,mRating,false);
     }
+
+    public float getRating() {
+        return mRating;
+    }
+
+    private void makeHalfPaitedStar() {
+        mHalfPaitedStar = StarShape.create(mDiameter,mDiameter,0.5f,mStarColor,mStarCoverColor);
+    }
+
 
     private void makeDefaultStar() {
         if(mDiameter > 0) {
@@ -87,7 +149,7 @@ public class RatingBar extends View{
 
     private void makeRatioStar() {
         if(mDiameter > 0) {
-            mHalfStar = StarShape.create(mDiameter,mDiameter,(mRating%mRSR)/mRSR,mStarColor,mStarCoverColor);
+            mRatioStar = StarShape.create(mDiameter,mDiameter,(mRating%mRSR)/mRSR,mStarColor,mStarCoverColor);
         }
     }
 
@@ -111,11 +173,50 @@ public class RatingBar extends View{
             mPaintedStar.draw(canvas,p);
             canvas.translate( mDiameter + mStarPadding,0);
         }
-        mHalfStar.draw(canvas,p);
+        mRatioStar.draw(canvas,p);
         for(int i = 0;i < defaultStars;i++) {
             canvas.translate( mDiameter + mStarPadding,0);
             mDefaultStar.draw(canvas,p);
         }
         canvas.restore();;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if(mIsIndicator) {
+            return false;
+        }
+        int action = event.getAction()&MotionEvent.ACTION_MASK;
+        int width = getMeasuredWidth();
+        float x = event.getX();
+        float y = event.getY();
+        boolean invalidate = false;
+        if(action == MotionEvent.ACTION_DOWN) {
+            mTouchPoint.x = x;
+            mTouchPoint.y = y;
+            invalidate = true;
+        } else if(action == MotionEvent.ACTION_MOVE || action == MotionEvent.ACTION_UP) {
+            if(Math.abs(x - mTouchPoint.x) > mTouchSlop || Math.abs(y - mTouchPoint.y) > mTouchSlop) {
+                mTouchPoint.x = x;
+                mTouchPoint.y = y;
+                invalidate = true;
+            }
+        }
+        if(invalidate) {
+            int count = Math.round(((x/width * mMaxRating)/mRSR)*2);
+            mRating = mRSR * count/2;
+            mRatioStar = count%2 == 0 ?mDefaultStar:mHalfPaitedStar;
+            invalidate();
+            if(mLinstener != null)
+                mLinstener.onRatingChanged(this,mRating,true);
+        }
+
+        return true;
+    }
+
+    public interface OnRatingBarChangeListener {
+
+        void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser);
+
     }
 }

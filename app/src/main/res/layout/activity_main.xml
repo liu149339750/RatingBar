@@ -36,13 +36,15 @@
             app:rating="5"/>
 
         <com.lw.ratingbar.RatingBar
+            android:id="@+id/test2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:starBackColor="@color/default_star_backgroud_color"
             app:starCoverColor="@color/default_star_cover_color"
             app:numStars="5"
+            app:isIndicator="true"
             app:starRadius="30dp"
-            app:maxRating="50"
+            app:maxRating="16"
             app:rating="15"/>
 
         <com.lw.ratingbar.RatingBar
@@ -52,6 +54,12 @@
             app:starCoverColor="@color/default_star_cover_color"
             app:numStars="10"
             app:rating="9.2"/>
+
+        <Button
+            android:id="@+id/button"
+            android:text="click Me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
